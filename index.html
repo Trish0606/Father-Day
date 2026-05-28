@@ -82,7 +82,7 @@
             display: none; 
             opacity: 0; 
             width: 90%; 
-            max-width: 450px; 
+            max-width: 460px; 
             background: rgba(7, 38, 59, 0.95); 
             border: 3px solid #328cc1; 
             border-radius: 12px; 
@@ -91,6 +91,15 @@
             box-shadow: 0 15px 40px rgba(0,0,0,0.5); 
             z-index: 10; 
             transition: opacity 0.8s ease-in-out; 
+            position: relative;
+        }
+
+        /* STAMP EXTENSION */
+        .tech-stamp {
+            position: absolute; top: 12px; right: 15px;
+            border: 1px dashed #d9b310; color: #d9b310;
+            padding: 2px 6px; font-size: 0.65em; font-weight: bold;
+            transform: rotate(3deg); border-radius: 3px; opacity: 0.8;
         }
         
         img#dad-photo { 
@@ -99,10 +108,16 @@
             object-fit: contain; 
             border-radius: 8px; 
             border: 2px dashed #328cc1; 
-            margin-bottom: 15px; 
+            margin-bottom: 10px; 
+        }
+
+        /* LIVE LIVE COUNTER DESIGN */
+        .live-counter {
+            font-size: 0.75em; color: #328cc1;
+            margin-bottom: 10px; letter-spacing: 1px; font-weight: bold;
         }
         
-        h1 { color: #d9b310; font-size: 1.6em; margin: 10px 0; letter-spacing: 1px; }
+        h1 { color: #d9b310; font-size: 1.6em; margin: 5px 0 10px 0; letter-spacing: 1px; }
         
         /* DAD METRICS CORE PARAMETERS */
         .metrics-board {
@@ -156,6 +171,12 @@
         }
         .terminal-buttons button:hover { background: #1d5f8a; }
         .terminal-buttons button:active { transform: scale(0.95); }
+
+        /* AUX BUTTON PANEL AT BOTTOM */
+        .control-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-top: 25px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1);
+        }
     </style>
 </head>
 <body>
@@ -169,7 +190,12 @@
     </div>
 
     <div class="display-container" id="reveal-card">
+        <div class="tech-stamp">SYS_VER: 1.0_APPROVED</div>
+
         <img src="dad.jpg" alt="Best Dad Ever" id="dad-photo">
+        
+        <div class="live-counter">TOTAL HOURS OF BEST ADVICE: <span id="odometer">0</span> HR</div>
+
         <h1>HAPPY FATHER'S DAY!</h1>
         
         <div class="metrics-board">
@@ -189,18 +215,21 @@
             <button onclick="selectSpec(2)">[MECHANICS]</button>
         </div>
 
-        <button onclick="systemOverride()" style="margin-top: 25px; padding: 5px 10px; background: #cc2511; color: white; border: 1px dashed white; border-radius: 4px; font-family: 'Courier New'; font-size: 0.7em; cursor: pointer; font-weight: bold;">⚠️ SYSTEM OVERRIDE</button>
+        <div class="control-footer">
+            <button onclick="systemOverride()" style="padding: 5px 10px; background: #cc2511; color: white; border: 1px dashed white; border-radius: 4px; font-family: 'Courier New'; font-size: 0.7em; cursor: pointer; font-weight: bold;">⚠️ SYSTEM OVERRIDE</button>
+            <button id="audio-toggle" onclick="toggleMute()" style="padding: 5px 10px; background: transparent; color: #328cc1; border: 1px solid #328cc1; border-radius: 4px; font-family: 'Courier New'; font-size: 0.7em; cursor: pointer;">🔊 AUDIO: ON</button>
+        </div>
     </div>
 
     <script>
-        // Custom schematic logs tailored for an engineer Dad
         const dadSayings = [
             "FOUNDATION LOG: To the man who built the structural framework of our family. Your support is our perfect constant. 📐",
             "LOGIC LOG: Thank you for teaching me to look at problems logically, debug my failures, and always analyze to find a solution. 🛠️",
             "MECHANICS LOG: Happy Father's Day to my favorite engineer! You are structurally, mechanically, and completely irreplaceable. ⚡"
         ];
 
-        // Triggered when button on gateway layout pane is tapped
+        let soundEnabled = true;
+
         function unrollBlueprint() {
             document.getElementById('blueprint-gate').classList.add('open');
             
@@ -212,22 +241,51 @@
                 setTimeout(() => {
                     card.style.opacity = '1';
                     setInterval(spawnParticles, 350);
+                    runOdometer(); // Start counting data upward
                 }, 50);
             }, 1500);
         }
 
-        // Swaps arrays and adds terminal diagnostic scans
+        // Live updating odometer counting system
+        function runOdometer() {
+            const countTarget = 999999;
+            const element = document.getElementById('odometer');
+            let current = 0;
+            const step = Math.ceil(countTarget / 60); // Speed up counting steps
+            
+            let timer = setInterval(() => {
+                current += step;
+                if (current >= countTarget) {
+                    element.innerText = countTarget.toLocaleString();
+                    clearInterval(timer);
+                } else {
+                    element.innerText = current.toLocaleString();
+                }
+            }, 25);
+        }
+
+        // Play or suppress mechanical beep
+        function playBeep() {
+            if (!soundEnabled) return;
+            const sound = document.getElementById('click-sound');
+            if (sound) { sound.currentTime = 0; sound.play().catch(e => {}); }
+        }
+
+        // System Settings Audio Handler
+        function toggleMute() {
+            soundEnabled = !soundEnabled;
+            const btn = document.getElementById('audio-toggle');
+            btn.innerText = soundEnabled ? "🔊 AUDIO: ON" : "🔇 AUDIO: MUTED";
+            if (soundEnabled) playBeep();
+        }
+
         function selectSpec(index) {
             const textElement = document.getElementById('changing-text');
-            const sound = document.getElementById('click-sound');
-            
-            // Play mechanical sound
-            if (sound) { sound.currentTime = 0; sound.play().catch(e => {}); }
+            playBeep();
             
             textElement.style.opacity = 0;
             
             setTimeout(() => {
-                // Flash terminal scanning state
                 textElement.innerText = "RUNNING DIAGNOSTICS... DECRYPTING LOG FILE...";
                 textElement.style.opacity = 0.4;
                 
@@ -238,29 +296,22 @@
             }, 200);
         }
 
-        // Fun Red Alert Crisis Button logic
         function systemOverride() {
-            const sound = document.getElementById('click-sound');
-            if (sound) { sound.currentTime = 0; sound.play().catch(e => {}); }
-
-            // Flash warning layout states
+            playBeep();
             document.body.style.backgroundColor = "#5a0f0f";
             document.body.style.backgroundImage = "linear-gradient(rgba(255,0,0,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,0,0,0.1) 1px, transparent 1px)";
             
-            // Explode engine parts completely onto the screen
             let panicInterval = setInterval(spawnParticles, 40);
             
             setTimeout(() => {
                 alert("🚨 CRITICAL ERROR DETECTED:\n\nFather's Day love parameters have exceeded maximum safety levels! Core thermal matrix melting! ❤️🔥");
                 clearInterval(panicInterval);
                 
-                // Return safely to blueprint specs
                 document.body.style.backgroundColor = "#0b3c5d";
                 document.body.style.backgroundImage = "linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)";
             }, 1000);
         }
 
-        // Builds dynamic workspace floating particles
         function spawnParticles() {
             const symbols = ['⚙️', '⭐', '👍', '📐', '🔧', '✨'];
             const p = document.createElement('div');
