@@ -21,6 +21,7 @@
             font-family: 'Courier New', Courier, monospace; 
             color: #fff; 
             overflow: hidden; 
+            transition: background 0.5s ease;
         }
 
         /* BLUEPRINT SLIDING DOORS (The Entrance Cover) */
@@ -119,7 +120,7 @@
         
         /* TERMINAL MESSAGE LOG COMPONENT */
         .message-box { 
-            min-height: 95px; 
+            min-height: 105px; 
             margin: 15px 0; 
             display: flex; 
             align-items: center; 
@@ -136,7 +137,7 @@
             font-size: 1.05em; 
             color: #fff; 
             margin: 0; 
-            transition: opacity 0.3s ease-in-out; 
+            transition: opacity 0.2s ease-in-out; 
         }
 
         /* INTERACTIVE LOG CONTROL BUTTONS */
@@ -158,6 +159,8 @@
     </style>
 </head>
 <body>
+
+    <audio id="click-sound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav" preload="auto"></audio>
 
     <div id="blueprint-gate">
         <div class="pane pane-left"></div>
@@ -185,10 +188,12 @@
             <button onclick="selectSpec(1)">[LOGIC]</button>
             <button onclick="selectSpec(2)">[MECHANICS]</button>
         </div>
+
+        <button onclick="systemOverride()" style="margin-top: 25px; padding: 5px 10px; background: #cc2511; color: white; border: 1px dashed white; border-radius: 4px; font-family: 'Courier New'; font-size: 0.7em; cursor: pointer; font-weight: bold;">⚠️ SYSTEM OVERRIDE</button>
     </div>
 
     <script>
-        // Custom schematic logs tailored for your Dad
+        // Custom schematic logs tailored for an engineer Dad
         const dadSayings = [
             "FOUNDATION LOG: To the man who built the structural framework of our family. Your support is our perfect constant. 📐",
             "LOGIC LOG: Thank you for teaching me to look at problems logically, debug my failures, and always analyze to find a solution. 🛠️",
@@ -206,21 +211,53 @@
                 
                 setTimeout(() => {
                     card.style.opacity = '1';
-                    // Spawn particles continuously once card renders
                     setInterval(spawnParticles, 350);
                 }, 50);
-            }, 1500); // Gives time for sliding animation parameters to finish
+            }, 1500);
         }
 
-        // Swaps array strings smoothly into text box
+        // Swaps arrays and adds terminal diagnostic scans
         function selectSpec(index) {
             const textElement = document.getElementById('changing-text');
+            const sound = document.getElementById('click-sound');
+            
+            // Play mechanical sound
+            if (sound) { sound.currentTime = 0; sound.play().catch(e => {}); }
+            
             textElement.style.opacity = 0;
             
             setTimeout(() => {
-                textElement.innerText = dadSayings[index];
-                textElement.style.opacity = 1;
-            }, 300);
+                // Flash terminal scanning state
+                textElement.innerText = "RUNNING DIAGNOSTICS... DECRYPTING LOG FILE...";
+                textElement.style.opacity = 0.4;
+                
+                setTimeout(() => {
+                    textElement.innerText = dadSayings[index];
+                    textElement.style.opacity = 1;
+                }, 600);
+            }, 200);
+        }
+
+        // Fun Red Alert Crisis Button logic
+        function systemOverride() {
+            const sound = document.getElementById('click-sound');
+            if (sound) { sound.currentTime = 0; sound.play().catch(e => {}); }
+
+            // Flash warning layout states
+            document.body.style.backgroundColor = "#5a0f0f";
+            document.body.style.backgroundImage = "linear-gradient(rgba(255,0,0,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,0,0,0.1) 1px, transparent 1px)";
+            
+            // Explode engine parts completely onto the screen
+            let panicInterval = setInterval(spawnParticles, 40);
+            
+            setTimeout(() => {
+                alert("🚨 CRITICAL ERROR DETECTED:\n\nFather's Day love parameters have exceeded maximum safety levels! Core thermal matrix melting! ❤️🔥");
+                clearInterval(panicInterval);
+                
+                // Return safely to blueprint specs
+                document.body.style.backgroundColor = "#0b3c5d";
+                document.body.style.backgroundImage = "linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)";
+            }, 1000);
         }
 
         // Builds dynamic workspace floating particles
