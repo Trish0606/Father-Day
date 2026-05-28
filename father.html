@@ -5,26 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Father's Day Blueprint</title>
     <style>
-        /* 1. FIXED BLUEPRINT BACKGROUND & BASE STYLING */
+        /* Base Layout & Alignment Reset */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
         body { 
             background-color: #0b3c5d; 
-            /* FIXED: Standardized CSS linear-gradient grid mapping */
-            background-image: linear-gradient(rgba(255,255,255,0.07) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(255,255,255,0.07) 1px, transparent 1px);
+            /* Engineered blueprint grid pattern */
+            background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
             background-size: 20px 20px;
-            height: 100vh; margin: 0; 
-            display: flex; justify-content: center; align-items: center; 
+            height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
             font-family: 'Courier New', Courier, monospace; 
-            color: #fff; overflow: hidden; 
+            color: #fff; 
+            overflow: hidden; 
         }
 
-        /* 2. BLUEPRINT SLIDING DOORS (The Entrance) */
+        /* BLUEPRINT SLIDING DOORS (The Entrance Cover) */
         #blueprint-gate { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            z-index: 1000; display: flex; transition: opacity 1s; 
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%; 
+            z-index: 1000; 
+            display: flex; 
         }
         .pane { 
-            flex: 1; height: 100%; background: #1d5f8a; 
+            flex: 1; 
+            height: 100%; 
+            background: #1d5f8a; 
             border: 4px dashed rgba(255,255,255,0.3);
             background-image: linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
                               linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
@@ -34,20 +44,31 @@
         .pane-left { transform-origin: left; border-right: 2px solid #fff; }
         .pane-right { transform-origin: right; border-left: 2px solid #fff; }
         
+        /* Sliding out classes triggered by JS */
         .open .pane-left { transform: translateX(-100%); }
         .open .pane-right { transform: translateX(100%); }
         
         #open-btn { 
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-            padding: 18px 36px; background: #328cc1; color: white;
-            border: 2px solid #fff; border-radius: 4px; cursor: pointer; 
-            font-family: 'Courier New', Courier, monospace; font-size: 1.2em; font-weight: bold;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4); z-index: 1001; 
-            letter-spacing: 2px; transition: background 0.3s;
+            position: absolute; 
+            top: 50%; left: 50%; 
+            transform: translate(-50%, -50%); 
+            padding: 18px 36px; 
+            background: #328cc1; 
+            color: white;
+            border: 2px solid #fff; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-family: 'Courier New', Courier, monospace; 
+            font-size: 1.2em; 
+            font-weight: bold;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4); 
+            z-index: 1001; 
+            letter-spacing: 2px;
+            transition: background 0.3s;
         }
         #open-btn:hover { background: #0b3c5d; }
 
-        /* 3. FLOATING PARTICLES (Gears, Stars, Thumbs Up) */
+        /* FLOATING ENGINEER PARTICLES */
         .particle { position: absolute; pointer-events: none; animation: floatUp 6s linear forwards; }
         @keyframes floatUp {
             0% { transform: translateY(0) rotate(0deg) scale(0); opacity: 0; }
@@ -55,50 +76,85 @@
             100% { transform: translateY(-110vh) rotate(360deg) scale(1.3); opacity: 0; }
         }
 
-        /* 4. MAIN DISPLAY CARD */
+        /* MAIN REVEAL SHEET DISPLAY */
         .display-container { 
-            display: none; opacity: 0; width: 90%; max-width: 450px; 
-            background: rgba(11, 60, 93, 0.95); border: 3px solid #328cc1; 
-            border-radius: 12px; padding: 30px; box-sizing: border-box; 
-            text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.5); 
-            z-index: 10; transition: opacity 1s ease-in-out; 
+            display: none; 
+            opacity: 0; 
+            width: 90%; 
+            max-width: 450px; 
+            background: rgba(7, 38, 59, 0.95); 
+            border: 3px solid #328cc1; 
+            border-radius: 12px; 
+            padding: 30px; 
+            text-align: center; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5); 
+            z-index: 10; 
+            transition: opacity 0.8s ease-in-out; 
         }
         
         img#dad-photo { 
-            width: 100%; max-height: 200px; object-fit: contain; 
-            border-radius: 8px; border: 2px dashed #328cc1; margin-bottom: 15px; 
+            width: 100%; 
+            max-height: 200px; 
+            object-fit: contain; 
+            border-radius: 8px; 
+            border: 2px dashed #328cc1; 
+            margin-bottom: 15px; 
         }
         
         h1 { color: #d9b310; font-size: 1.6em; margin: 10px 0; letter-spacing: 1px; }
         
-        /* DAD METRICS BOARD */
+        /* DAD METRICS CORE PARAMETERS */
         .metrics-board {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; 
-            font-size: 0.85em; margin: 15px 0; border: 1px dashed #328cc1; 
-            padding: 10px; border-radius: 6px; background: rgba(0,0,0,0.3);
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 10px; 
+            font-size: 0.85em; 
+            margin: 15px 0; 
+            border: 1px dashed #328cc1; 
+            padding: 10px; 
+            border-radius: 6px; 
+            background: rgba(0,0,0,0.3);
             text-align: left;
         }
         
-        /* POEM / SAYING CONTAINER */
+        /* TERMINAL MESSAGE LOG COMPONENT */
         .message-box { 
-            min-height: 90px; margin: 15px 0; display: flex; 
-            align-items: center; justify-content: center; 
-            background: rgba(255,255,255,0.05); padding: 10px; border-radius: 6px;
+            min-height: 95px; 
+            margin: 15px 0; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            background: rgba(255,255,255,0.05); 
+            padding: 12px; 
+            border-radius: 6px;
+            border-left: 3px solid #d9b310;
         }
         
         #changing-text { 
-            font-style: italic; line-height: 1.6; font-size: 1.05em; 
-            color: #fff; margin: 0; transition: opacity 0.3s ease-in-out; 
+            font-style: italic; 
+            line-height: 1.6; 
+            font-size: 1.05em; 
+            color: #fff; 
+            margin: 0; 
+            transition: opacity 0.3s ease-in-out; 
         }
 
-        /* INTERACTIVE MODULE BUTTONS */
+        /* INTERACTIVE LOG CONTROL BUTTONS */
         .terminal-buttons { display: flex; gap: 8px; justify-content: center; margin-top: 15px; }
         .terminal-buttons button { 
-            font-family: 'Courier New', Courier, monospace; font-size: 0.8em; 
-            padding: 8px 12px; background: #328cc1; color: white; border: 1px solid white; 
-            border-radius: 4px; cursor: pointer; font-weight: bold; transition: background 0.2s;
+            font-family: 'Courier New', Courier, monospace; 
+            font-size: 0.8em; 
+            padding: 8px 12px; 
+            background: #328cc1; 
+            color: white; 
+            border: 1px solid white; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-weight: bold;
+            transition: background 0.2s, transform 0.1s;
         }
-        .terminal-buttons button:hover { background: #0b3c5d; }
+        .terminal-buttons button:hover { background: #1d5f8a; }
+        .terminal-buttons button:active { transform: scale(0.95); }
     </style>
 </head>
 <body>
@@ -132,13 +188,14 @@
     </div>
 
     <script>
-        // Highly targeted logs/poems for an engineer dad
+        // Custom schematic logs tailored for your Dad
         const dadSayings = [
             "FOUNDATION LOG: To the man who built the structural framework of our family. Your support is our perfect constant. 📐",
-            "LOGIC LOG: Thank you for teaching me to look at problems logically, debug my failures, and always try again. 🛠️",
+            "LOGIC LOG: Thank you for teaching me to look at problems logically, debug my failures, and always analyze to find a solution. 🛠️",
             "MECHANICS LOG: Happy Father's Day to my favorite engineer! You are structurally, mechanically, and completely irreplaceable. ⚡"
         ];
 
+        // Triggered when button on gateway layout pane is tapped
         function unrollBlueprint() {
             document.getElementById('blueprint-gate').classList.add('open');
             
@@ -149,12 +206,13 @@
                 
                 setTimeout(() => {
                     card.style.opacity = '1';
+                    // Spawn particles continuously once card renders
                     setInterval(spawnParticles, 350);
                 }, 50);
-            }, 1500);
+            }, 1500); // Gives time for sliding animation parameters to finish
         }
 
-        // Handles user selecting different custom data blocks
+        // Swaps array strings smoothly into text box
         function selectSpec(index) {
             const textElement = document.getElementById('changing-text');
             textElement.style.opacity = 0;
@@ -165,6 +223,7 @@
             }, 300);
         }
 
+        // Builds dynamic workspace floating particles
         function spawnParticles() {
             const symbols = ['⚙️', '⭐', '👍', '📐', '🔧', '✨'];
             const p = document.createElement('div');
