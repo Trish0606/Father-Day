@@ -146,6 +146,8 @@
 </head>
 <body>
 
+    <audio id="click-sound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav" preload="auto"></audio>
+
     <div id="blueprint-gate">
         <div class="pane pane-left"></div>
         <div class="pane pane-right"></div>
@@ -218,12 +220,14 @@
     </div>
 
     <script>
+        // Custom message matrix arrays
         const dadSayings = [
             "FOUNDATION LOG: To the man who built the structural framework of our family. Your support is our perfect constant. 📐",
             "LOGIC LOG: Thank you for teaching me to look at problems logically, debug my failures, and always analyze to find a clean solution. 🛠️",
             "MECHANICS LOG: Happy Father's Day to my favorite engineer! You are structurally, mechanically, and completely irreplaceable. ⚡"
         ];
 
+        // Match parameters for bottom secondary readout stream window
         const hardwareLogs = [
             "> FETCH_DATA: [struct core_framework] -- baseline_stability: INFINITE // material_strength: IMMUTABLE // link: LOCALHOST",
             "> RUN_LOGIC: [compile options -O3] -- parsing_wisdom... Done. // debug_runtime: 0 errors // path_analysis: OPTIMAL",
@@ -231,7 +235,6 @@
         ];
 
         let soundEnabled = true;
-        let audioCtx = null;
 
         function unrollBlueprint() {
             document.getElementById('blueprint-gate').classList.add('open');
@@ -250,6 +253,7 @@
             }, 1500);
         }
 
+        // Fills diagnostic progress meters
         function triggerHardwareGauges() {
             document.getElementById('bar-patience').style.width = '100%';
             document.getElementById('bar-coffee').style.width = '100%';
@@ -262,6 +266,7 @@
             document.getElementById('txt-jokes').innerText = "CRITICAL";
         }
 
+        // Rapid numeric dial increments
         function runOdometer() {
             const target = 745291;
             const el = document.getElementById('odometer');
@@ -274,28 +279,10 @@
             }, 20);
         }
 
-        // Native audio synthesizer (No link needed, won't break or freeze the script)
         function playBeep() {
             if (!soundEnabled) return;
-            try {
-                if (!audioCtx) {
-                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                }
-                let osc = audioCtx.createOscillator();
-                let gain = audioCtx.createGain();
-                
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(800, audioCtx.currentTime); // Quick high tech click frequency
-                gain.gain.setValueAtTime(0.05, audioCtx.currentTime); // Smooth volume
-                gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.1);
-                
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.1);
-            } catch(e) {
-                console.log("Audio synthesis blocked by browser security settings");
-            }
+            const sound = document.getElementById('click-sound');
+            if (sound) { sound.currentTime = 0; sound.play().catch(e => {}); }
         }
 
         function toggleMute() {
@@ -304,13 +291,14 @@
             if(soundEnabled) playBeep();
         }
 
+        // Syncs active selectors, alters highlight indicators, and updates decrypt parameters
         function selectNode(index) {
             playBeep();
             
             for(let i=0; i<3; i++) {
-                document.getElementById('node-' + i).classList.remove('active');
+                document.getElementById(`node-${i}`).classList.remove('active');
             }
-            document.getElementById('node-' + index).classList.add('active');
+            document.getElementById(`node-${index}`).classList.add('active');
 
             const textElement = document.getElementById('changing-text');
             const feedElement = document.getElementById('hw-feed');
@@ -330,6 +318,7 @@
             }, 200);
         }
 
+        // Override crisis simulator
         function systemOverride() {
             playBeep();
             document.body.style.backgroundColor = "#4a0808";
@@ -347,6 +336,7 @@
             }, 1100);
         }
 
+        // Particle generator loop
         function spawnParticles() {
             const symbols = ['⚙️', '⚡', '👍', '📐', '🔧', '🤖'];
             const p = document.createElement('div');
