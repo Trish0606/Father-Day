@@ -68,4 +68,348 @@
             z-index: 10; transition: opacity 0.6s ease-in-out; position: relative;
         }
 
-        /* INTER
+        /* INTERACTIVE RETICLE OVERLAY EFFECT */
+        .hud-container::before {
+            content: " "; display: block; position: absolute; top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
+            background-size: 100% 4px; z-index: 100; pointer-events: none;
+        }
+
+        /* CONSOLE HEADER MODULE */
+        .hud-header { border-bottom: 2px double #0066aa; padding-bottom: 12px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .hud-header h1 { color: #dbaf12; font-size: 1.7em; letter-spacing: 3px; font-weight: bold; text-shadow: 0 0 10px rgba(219, 175, 18, 0.4); }
+        .sys-status { font-size: 0.8em; color: #33ff33; border: 1px solid #33ff33; padding: 4px 10px; border-radius: 3px; background: rgba(51, 255, 51, 0.1); font-weight: bold; box-shadow: 0 0 8px rgba(51,255,51,0.3); }
+
+        /* INTERFACE DISTRIBUTION WORKSPACE */
+        .console-layout { display: grid; grid-template-columns: 1fr 1.3fr; gap: 25px; }
+        @media(max-width: 768px) { .console-layout { grid-template-columns: 1fr; } }
+
+        /* LEFT WORKSPACE MODULE: SCAN TARGET & DIGITAL GAUGES */
+        .profile-panel { display: flex; flex-direction: column; align-items: center; background: rgba(0,10,20,0.5); padding: 20px; border: 1px solid rgba(0, 170, 255, 0.3); border-radius: 4px; position: relative; }
+        
+        .target-box { position: relative; width: 100%; max-height: 200px; margin-bottom: 15px; overflow: hidden; border: 1px solid #0066aa; }
+        img#dad-photo { width: 100%; max-height: 200px; object-fit: contain; filter: saturate(0.8) hue-rotate(5deg); display: block; }
+        
+        /* HOVER TARGET CROSSHAIR ALIGNMENTS */
+        .target-reticle {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            border: 20px solid transparent; border-image: linear-gradient(to bottom right, #dbaf12 25%, transparent 25%, transparent 75%, #dbaf12 75%) 1;
+            box-sizing: border-box; pointer-events: none; opacity: 0; transition: opacity 0.3s;
+        }
+        .target-box:hover .target-reticle { opacity: 1; animation: pulseReticle 1.5s infinite; }
+        @keyframes pulseReticle { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.97); } }
+
+        /* ADVANCED HARDWARE GAUGE PANELS */
+        .gauges-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; margin-top: 10px; }
+        .gauge-card { text-align: left; font-size: 0.75em; color: #fff; background: rgba(1, 10, 20, 0.8); padding: 12px; border: 1px solid rgba(0, 170, 255, 0.2); border-radius: 4px; position: relative; }
+        .gauge-bar-outer { width: 100%; background: rgba(0, 170, 255, 0.1); height: 8px; border-radius: 2px; margin-top: 6px; overflow: hidden; border: 1px solid rgba(0, 170, 255, 0.3); }
+        .gauge-bar-inner { height: 100%; background: #00aaff; width: 0%; transition: width 3s cubic-bezier(0.075, 0.82, 0.165, 1); box-shadow: 0 0 8px #00aaff; }
+
+        /* RIGHT PANEL: MAP INTERACTION & LIVE EQUALIZERS */
+        .data-panel { display: flex; flex-direction: column; justify-content: space-between; }
+        
+        /* MEMORY NODE BLOCK CONNECTOR MAP */
+        .timeline-header { font-size: 0.8em; color: #00aaff; font-weight: bold; margin-bottom: 8px; letter-spacing: 1px; text-align: left; }
+        .memory-timeline { display: flex; justify-content: space-around; background: rgba(0, 12, 24, 0.7); border: 1px solid #0066aa; padding: 20px 10px; border-radius: 4px; position: relative; margin-bottom: 20px; }
+        .timeline-line { position: absolute; top: 50%; left: 8%; right: 8%; height: 2px; background: rgba(0, 170, 255, 0.3); z-index: 1; transform: translateY(-50%); dashed: 2px; }
+        
+        .node-btn { 
+            position: relative; z-index: 2; background: #020b14; border: 2px solid #00aaff; 
+            color: #00aaff; width: 42px; height: 42px; border-radius: 4px; 
+            font-family: 'Courier New', monospace; font-size: 0.85em; font-weight: bold; 
+            cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 10px rgba(0, 170, 255, 0.2);
+        }
+        .node-btn:hover { background: #dbaf12; border-color: #fff; color: #020b14; box-shadow: 0 0 15px #dbaf12; transform: translateY(-3px); }
+        .node-btn.active { background: #00aaff; border-color: #fff; color: #020b14; box-shadow: 0 0 20px #00aaff; animation: pulseActive 2s infinite; }
+        @keyframes pulseActive { 0%, 100% { box-shadow: 0 0 12px #00aaff; } 50% { box-shadow: 0 0 25px #00aaff; } }
+
+        /* LIVE AUDIO EQUALIZER MATRIX DISPLAY */
+        .terminal-wrapper { position: relative; margin-bottom: 20px; }
+        .terminal-screen { background: #01060d; border: 1px solid #0066aa; border-radius: 4px; padding: 18px; min-height: 130px; text-align: left; border-left: 5px solid #dbaf12; position: relative; }
+        .term-prompt { font-size: 0.75em; color: #0066aa; margin-bottom: 8px; letter-spacing: 1px; font-weight: bold; }
+        #changing-text { line-height: 1.6; font-size: 0.95em; color: #fff; transition: opacity 0.2s; }
+
+        /* AUDIO EQUALIZER CSS ANCHORS */
+        .eq-bars { display: flex; gap: 3px; position: absolute; bottom: 10px; right: 15px; height: 30px; align-items: flex-end; opacity: 0.6; }
+        .eq-bar { width: 3px; height: 5px; background: #00aaff; animation: bounceEQ 1s ease-in-out infinite alternate; }
+        .eq-bar:nth-child(2) { animation-delay: 0.2s; }
+        .eq-bar:nth-child(3) { animation-delay: 0.4s; }
+        .eq-bar:nth-child(4) { animation-delay: 0.1s; }
+        @keyframes bounceEQ { 0% { height: 4px; } 100% { height: 28px; } }
+
+        /* SCROLLING CONSOLE INFRASTRUCTURE DICTIONARY */
+        .hardware-feed { background: #000205; border: 1px solid rgba(0, 170, 255, 0.2); border-radius: 4px; padding: 10px; font-size: 0.68em; color: #00aa66; height: 50px; overflow: hidden; text-align: left; font-weight: bold; line-height: 1.4; }
+
+        /* MASTER FOOTER TERMINAL TRIGGERS */
+        .hud-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(0, 170, 255, 0.3); padding-top: 18px; margin-top: 10px; }
+        .hud-footer button { font-family: 'Courier New', monospace; font-size: 0.75em; font-weight: bold; padding: 10px 18px; border-radius: 4px; cursor: pointer; transition: all 0.2s; letter-spacing: 1px; }
+        .override-btn { background: #aa1111; color: white; border: 1px dashed white; box-shadow: 0 0 10px rgba(170,17,17,0.4); }
+        .override-btn:hover { background: #ff2222; box-shadow: 0 0 20px #ff2222; transform: scale(1.02); }
+        .audio-btn { background: transparent; color: #00aaff; border: 1px solid #00aaff; }
+        .audio-btn:hover { background: rgba(0, 170, 255, 0.1); }
+    </style>
+</head>
+<body>
+
+    <div id="blueprint-gate">
+        <div class="pane pane-left"></div>
+        <div class="pane pane-right"></div>
+        <button id="open-btn" onclick="triggerMatrixBoot()">INITIALIZE CORE MAINBOARD ⚙️</button>
+    </div>
+
+    <div id="boot-screen"></div>
+
+    <div class="hud-container" id="reveal-card">
+        
+        <div class="hud-header">
+            <h1>SYS_MAP // CORE.DIAGNOSTICS_V3</h1>
+            <div class="sys-status" id="live-status">CONSOLE: ONLINE</div>
+        </div>
+
+        <div class="console-layout">
+            
+            <div class="profile-panel">
+                <div class="target-box">
+                    <img src="dad.jpg" alt="Best Dad Ever" id="dad-photo">
+                    <div class="target-reticle"></div>
+                </div>
+                
+                <div style="font-size: 0.72em; color: #0066aa; letter-spacing: 1px; font-weight: bold; margin-bottom: 8px;">
+                    MATRIX_RUNTIME: <span id="odometer">0</span> ADVICE_LOOPS_COMPILED
+                </div>
+                
+                <div class="gauges-grid">
+                    <div class="gauge-card">
+                        🛠️ PATIENCE: <span id="txt-patience">0%</span>
+                        <div class="gauge-bar-outer"><div id="bar-patience" class="gauge-bar-inner" style="background:#dbaf12; box-shadow: 0 0 8px #dbaf12;"></div></div>
+                    </div>
+                    <div class="gauge-card">
+                        ☕ COFFEE: <span id="txt-coffee">0%</span>
+                        <div class="gauge-bar-outer"><div id="bar-coffee" class="gauge-bar-inner" style="background:#00aaff;"></div></div>
+                    </div>
+                    <div class="gauge-card">
+                        🧠 WISDOM: <span id="txt-wisdom">0%</span>
+                        <div class="gauge-bar-outer"><div id="bar-wisdom" class="gauge-bar-inner" style="background:#33ff33; box-shadow: 0 0 8px #33ff33;"></div></div>
+                    </div>
+                    <div class="gauge-card">
+                        ❤️ JOKES: <span id="txt-jokes">0%</span>
+                        <div class="gauge-bar-outer"><div id="bar-jokes" class="gauge-bar-inner" style="background:#ff2222; box-shadow: 0 0 8px #ff2222;"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-panel">
+                
+                <div>
+                    <div class="timeline-header">TACTICAL_SCHEMATIC_NODES:</div>
+                    <div class="memory-timeline">
+                        <div class="timeline-line"></div>
+                        <button class="node-btn" id="node-0" onclick="selectNode(0)">SYS01</button>
+                        <button class="node-btn" id="node-1" onclick="selectNode(1)">SYS02</button>
+                        <button class="node-btn" id="node-2" onclick="selectNode(2)">SYS03</button>
+                    </div>
+                </div>
+
+                <div class="terminal-wrapper">
+                    <div class="terminal-screen">
+                        <div class="term-prompt">CORE_DECRYPT_OUTPUT_STREAM:</div>
+                        <p id="changing-text">Awaiting input execution parameter... Select a schematic matrix node block above.</p>
+                        
+                        <div class="eq-bars">
+                            <div class="eq-bar"></div>
+                            <div class="eq-bar"></div>
+                            <div class="eq-bar"></div>
+                            <div class="eq-bar"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hardware-feed" id="hw-feed">
+                    > COMPILE_READY // ENGINE_STANDBY // PIPELINE: SECURE
+                </div>
+
+            </div>
+        </div>
+
+        <div class="hud-footer">
+            <button class="override-btn" onclick="systemOverride()">⚠️ CORE OVERLOAD OVERRIDE</button>
+            <button class="audio-btn" id="audio-toggle" onclick="toggleMute()">🔊 SYSTEM_AUDIO: ON</button>
+        </div>
+    </div>
+
+    <script>
+        const dadSayings = [
+            "FOUNDATION LOG: To the man who built the structural framework of our family. Your support is our perfect constant. 📐",
+            "LOGIC LOG: Thank you for teaching me to look at problems logically, debug my failures, and always analyze to find a clean solution. 🛠️",
+            "MECHANICS LOG: Happy Father's Day to my favorite engineer! You are structurally, mechanically, and completely irreplaceable. ⚡"
+        ];
+
+        const hardwareLogs = [
+            "> [IO_FETCH] -- baseline_stability: INFINITE // material_strength: IMMUTABLE // link: LOCALHOST",
+            "> [THETA_RUN] -- parsing_wisdom... Done. // runtime_debug: 0 errors // path_analysis: OPTIMAL",
+            "> [GEAR_CALIBRATE] -- velocity: NOMINAL // thermal_core: SAFE // output_efficiency: 100% // load: MAX_LIMIT"
+        ];
+
+        let soundEnabled = true;
+        let audioCtx = null;
+
+        // NEW: Matrix Terminal Boot Sequence Simulation
+        function triggerMatrixBoot() {
+            document.getElementById('blueprint-gate').classList.add('open');
+            
+            setTimeout(() => {
+                document.getElementById('blueprint-gate').style.display = 'none';
+                const bootScreen = document.getElementById('boot-screen');
+                bootScreen.style.display = 'block';
+                
+                let lines = [
+                    "> INITIALIZING MAINBOARD ARCHITECTURE...",
+                    "> CONNECTING INTERACTIVE RADAR INFRASTRUCTURE... DONE.",
+                    "> LOADING COGNITIVE PARAMETER DATA PILES...",
+                    "> DECRYPTING FAMILY HISTORY BLOCK VECTORS...",
+                    "> STABILITY STATUS: OPTIMAL // SECURITY KEY: GRANTED",
+                    "> EXECUTION SEQUENCE: LAUNCH CONSOLE..."
+                ];
+                
+                let i = 0;
+                let bootInterval = setInterval(() => {
+                    if (i < lines.length) {
+                        bootScreen.innerHTML += lines[i] + "<br><br>";
+                        playBeep(600, 'square', 0.04);
+                        i++;
+                    } else {
+                        clearInterval(bootInterval);
+                        setTimeout(() => {
+                            bootScreen.style.display = 'none';
+                            launchMasterHUD();
+                        }, 600);
+                    }
+                }, 300);
+            }, 1200);
+        }
+
+        function launchMasterHUD() {
+            const card = document.getElementById('reveal-card');
+            card.style.display = 'block';
+            setTimeout(() => {
+                card.style.opacity = '1';
+                setInterval(spawnParticles, 350);
+                runOdometer();
+                triggerHardwareGauges();
+            }, 50);
+        }
+
+        function triggerHardwareGauges() {
+            document.getElementById('bar-patience').style.width = '100%';
+            document.getElementById('bar-coffee').style.width = '100%';
+            document.getElementById('bar-wisdom').style.width = '100%';
+            document.getElementById('bar-jokes').style.width = '100%';
+
+            document.getElementById('txt-patience').innerText = "100%";
+            document.getElementById('txt-coffee').innerText = "MAX_LOAD";
+            document.getElementById('txt-wisdom').innerText = "∞%";
+            document.getElementById('txt-jokes').innerText = "UNSTABLE";
+        }
+
+        function runOdometer() {
+            const target = 958204;
+            const el = document.getElementById('odometer');
+            let curr = 0;
+            const step = Math.ceil(target / 40);
+            let timer = setInterval(() => {
+                curr += step;
+                if (curr >= target) { el.innerText = target.toLocaleString(); clearInterval(timer); }
+                else { el.innerText = curr.toLocaleString(); }
+            }, 25);
+        }
+
+        // Expanded modular audio synth controller
+        function playBeep(freq = 850, type = 'sine', duration = 0.08) {
+            if (!soundEnabled) return;
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+                
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                gain.gain.setValueAtTime(duration, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch(e) {}
+        }
+
+        function toggleMute() {
+            soundEnabled = !soundEnabled;
+            document.getElementById('audio-toggle').innerText = soundEnabled ? "🔊 SYSTEM_AUDIO: ON" : "🔇 SYSTEM_AUDIO: MUTED";
+            if(soundEnabled) playBeep(900, 'sine', 0.05);
+        }
+
+        function selectNode(index) {
+            playBeep(750, 'triangle', 0.06);
+            
+            for(let i=0; i<3; i++) {
+                document.getElementById('node-' + i).classList.remove('active');
+            }
+            document.getElementById('node-' + index).classList.add('active');
+
+            const textElement = document.getElementById('changing-text');
+            const feedElement = document.getElementById('hw-feed');
+            
+            textElement.style.opacity = 0;
+            feedElement.innerText = "> DECRYPT_REQUEST: READING COMPONENT DATA STORAGE BLOCKS...";
+
+            setTimeout(() => {
+                textElement.innerText = ">> DECOMPRESSING SECTOR DATA... DECRYPT COMPLETE:";
+                textElement.style.opacity = 0.5;
+                
+                setTimeout(() => {
+                    textElement.innerText = dadSayings[index];
+                    textElement.style.opacity = 1;
+                    feedElement.innerText = hardwareLogs[index];
+                    playBeep(1000, 'sine', 0.04);
+                }, 500);
+            }, 200);
+        }
+
+        function systemOverride() {
+            playBeep(400, 'sawtooth', 0.3);
+            document.body.style.backgroundColor = "#3d0202";
+            document.getElementById('live-status').innerText = "CRITICAL METRIC BLOWN";
+            document.getElementById('live-status').style.borderColor = "#ff2222";
+            document.getElementById('live-status').style.color = "#ff2222";
+            document.getElementById('hw-feed').innerText = "🚨 MAINBOARD_CRISIS: VALUES EXCEEDED MAXIMUM ALLOWABLE SYSTEM SAFETY ENVELOPE.";
+            
+            let surge = setInterval(spawnParticles, 25);
+            
+            setTimeout(() => {
+                alert("🚨 MAINFRAME MALFUNCTION ALERT:\n\nFather's Day love parameter metrics have overflowed the CPU logic gates! Core stability terminal melting down! ❤️🔥");
+                clearInterval(surge);
+                document.body.style.backgroundColor = "#020b14";
+                document.getElementById('live-status').innerText = "CONSOLE: ONLINE";
+                document.getElementById('live-status').style.borderColor = "#33ff33";
+                document.getElementById('live-status').style.color = "#33ff33";
+                document.getElementById('hw-feed').innerText = "> STEADY_STATE: Matrix automatically restored. Core infrastructure re-stabilized.";
+            }, 1200);
+        }
+
+        function spawnParticles() {
+            const symbols = ['⚙️', '⚡', '📐', '🔧', '🤖', '0', '1'];
+            const p = document.createElement('div');
+            p.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
+            p.className = 'particle';
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.bottom = '-50px';
+            p.style.fontSize = (Math.random() * 12 + 16) + 'px';
+            p.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 5000);
+        }
+    </script>
+</body>
+</html>
