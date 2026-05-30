@@ -3,390 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Father's Day Blueprint</title>
+    <title>Father's Day Command Console</title>
     <style>
-        /* Base Layout & Alignment Reset */
+        /* Base Reset & Cyberpunk/Blueprint Layout */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
         body { 
-            background-color: #0b3c5d; 
-            /* Engineered blueprint grid pattern */
-            background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
-            background-size: 20px 20px;
+            background-color: #051625; 
+            background-image: linear-gradient(rgba(50, 140, 193, 0.05) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(50, 140, 193, 0.05) 1px, transparent 1px);
+            background-size: 25px 25px;
             height: 100vh; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
+            display: flex; justify-content: center; align-items: center; 
             font-family: 'Courier New', Courier, monospace; 
-            color: #fff; 
-            overflow: hidden; 
+            color: #50b4f0; overflow: hidden; 
             transition: background 0.5s ease;
         }
 
-        /* BLUEPRINT SLIDING DOORS (The Entrance Cover) */
+        /* INITIAL COVER: SLIDING TECH GATES */
         #blueprint-gate { 
-            position: fixed; 
-            top: 0; left: 0; 
-            width: 100%; height: 100%; 
-            z-index: 1000; 
-            display: flex; 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; display: flex; 
         }
         .pane { 
-            flex: 1; 
-            height: 100%; 
-            background: #1d5f8a; 
-            border: 4px dashed rgba(255,255,255,0.3);
-            background-image: linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
-            background-size: 40px 40px;
+            flex: 1; height: 100%; background: #0b3c5d; border: 4px dashed rgba(80, 180, 240, 0.3);
+            background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
             transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1); 
         }
-        .pane-left { transform-origin: left; border-right: 2px solid #fff; }
-        .pane-right { transform-origin: right; border-left: 2px solid #fff; }
-        
-        /* Sliding out classes triggered by JS */
+        .pane-left { transform-origin: left; border-right: 2px solid #50b4f0; }
+        .pane-right { transform-origin: right; border-left: 2px solid #50b4f0; }
         .open .pane-left { transform: translateX(-100%); }
         .open .pane-right { transform: translateX(100%); }
         
         #open-btn { 
-            position: absolute; 
-            top: 50%; left: 50%; 
-            transform: translate(-50%, -50%); 
-            padding: 18px 36px; 
-            background: #328cc1; 
-            color: white;
-            border: 2px solid #fff; 
-            border-radius: 4px; 
-            cursor: pointer; 
-            font-family: 'Courier New', Courier, monospace; 
-            font-size: 1.2em; 
-            font-weight: bold;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4); 
-            z-index: 1001; 
-            letter-spacing: 2px;
-            transition: background 0.3s;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+            padding: 20px 40px; background: #1d5f8a; color: #fff;
+            border: 2px solid #50b4f0; border-radius: 4px; cursor: pointer; 
+            font-family: 'Courier New', monospace; font-size: 1.2em; font-weight: bold;
+            box-shadow: 0 0 20px rgba(50, 140, 193, 0.5); z-index: 1001; letter-spacing: 2px;
         }
-        #open-btn:hover { background: #0b3c5d; }
 
-        /* FLOATING ENGINEER PARTICLES */
-        .particle { position: absolute; pointer-events: none; animation: floatUp 6s linear forwards; }
+        /* FLOATING BACKGROUND PARTICLES */
+        .particle { position: absolute; pointer-events: none; animation: floatUp 6s linear forwards; color: rgba(80, 180, 240, 0.4); }
         @keyframes floatUp {
             0% { transform: translateY(0) rotate(0deg) scale(0); opacity: 0; }
             10% { opacity: 0.8; }
-            100% { transform: translateY(-110vh) rotate(360deg) scale(1.3); opacity: 0; }
+            100% { transform: translateY(-110vh) rotate(360deg) scale(1.2); opacity: 0; }
         }
 
-        /* MAIN REVEAL SHEET DISPLAY WITH CRT INTERFACE LINES */
-        .display-container { 
-            display: none; 
-            opacity: 0; 
-            width: 90%; 
-            max-width: 470px; 
-            background: rgba(7, 38, 59, 0.96); 
-            border: 3px solid #328cc1; 
-            border-radius: 12px; 
-            padding: 25px; 
-            text-align: center; 
-            box-shadow: 0 15px 40px rgba(0,0,0,0.5); 
-            z-index: 10; 
-            transition: opacity 0.8s ease-in-out; 
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* CRT MONITOR SCANLINE SIMULATION EFFECT */
-        .display-container::before {
-            content: " "; display: block; position: absolute; top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 20; background-size: 100% 4px, 6px 100%; pointer-events: none;
-        }
-        .scanline {
-            width: 100%; height: 100px; background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(50,140,193,0.08) 50%, rgba(255,255,255,0));
-            position: absolute; top: -100px; left: 0; z-index: 21; pointer-events: none; animation: scan 8s linear infinite;
-        }
-        @keyframes scan { 0% { top: -100px; } 100% { top: 100%; } }
-
-        /* TECHNICAL STAMP WATERMARK */
-        .tech-stamp {
-            position: absolute; top: 12px; right: 15px;
-            border: 1px dashed #d9b310; color: #d9b310;
-            padding: 2px 6px; font-size: 0.65em; font-weight: bold;
-            transform: rotate(3deg); border-radius: 3px; opacity: 0.8; z-index: 22;
-        }
-
-        /* SCHEMATIC TARGETING IMAGE WRAPPER */
-        .photo-frame { position: relative; width: 100%; max-height: 200px; margin-bottom: 10px; cursor: crosshair; }
-        img#dad-photo { 
-            width: 100%; max-height: 200px; object-fit: contain; 
-            border-radius: 8px; border: 2px dashed #328cc1; transition: filter 0.3s;
-        }
-        .photo-frame:hover img#dad-photo { filter: brightness(0.4) sepia(1) hue-rotate(170deg); }
-        .target-overlay {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            color: #d9b310; font-size: 0.7em; font-weight: bold; width: 80%; opacity: 0; pointer-events: none;
-            transition: opacity 0.3s; letter-spacing: 1px; line-height: 1.4;
-        }
-        .photo-frame:hover .target-overlay { opacity: 1; }
-
-        /* REAL-TIME DATA TICKER ODOMETER */
-        .live-counter {
-            font-size: 0.75em; color: #328cc1;
-            margin-bottom: 10px; letter-spacing: 1px; font-weight: bold;
-        }
-        
-        h1 { color: #d9b310; font-size: 1.5em; margin: 5px 0; letter-spacing: 1px; }
-        
-        /* DAD METRICS AND SYSTEM GAUGES PANEL */
-        .metrics-board {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 0.8em; 
-            margin: 12px 0; border: 1px dashed #328cc1; padding: 12px; 
-            border-radius: 6px; background: rgba(0,0,0,0.4); text-align: left;
-        }
-        .gauge-container { width: 100%; background: rgba(255,255,255,0.1); height: 5px; border-radius: 2px; margin-top: 4px; overflow: hidden; }
-        .gauge-fill { height: 100%; background: #d9b310; width: 0%; transition: width 2s cubic-bezier(0.1, 1, 0.1, 1); }
-        
-        /* TERMINAL MESSAGE LOG COMPONENT */
-        .message-box { 
-            min-height: 95px; margin: 12px 0; display: flex; align-items: center; 
-            justify-content: center; background: rgba(255,255,255,0.03); 
-            padding: 12px; border-radius: 6px; border-left: 3px solid #d9b310;
-        }
-        #changing-text { 
-            font-style: italic; line-height: 1.5; font-size: 0.95em; 
-            color: #fff; margin: 0; transition: opacity 0.2s ease-in-out; 
-        }
-
-        /* LIVE HARDWARE TERMINAL DATA SUITE */
-        .hardware-terminal {
-            background: #041624; border: 1px solid rgba(50, 140, 193, 0.4); border-radius: 4px;
-            padding: 6px; text-align: left; font-size: 0.65em; color: #50b4f0; height: 42px;
-            overflow: hidden; white-space: nowrap; margin-top: 5px; opacity: 0.8;
-        }
-
-        /* INTERACTIVE LOG CONTROL BUTTONS */
-        .terminal-buttons { display: flex; gap: 8px; justify-content: center; margin-top: 12px; }
-        .terminal-buttons button { 
-            font-family: 'Courier New', Courier, monospace; font-size: 0.75em; 
-            padding: 8px 12px; background: #328cc1; color: white; border: 1px solid white; 
-            border-radius: 4px; cursor: pointer; font-weight: bold;
-            transition: background 0.2s, transform 0.1s;
-        }
-        .terminal-buttons button:hover { background: #1d5f8a; }
-        .terminal-buttons button:active { transform: scale(0.95); }
-
-        /* AUX BUTTON PANEL AT BOTTOM */
-        .control-footer {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-top: 20px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1);
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Click feedback audio track layout element -->
-    <audio id="click-sound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav" preload="auto"></audio>
-
-    <!-- Doors covering screen on page initialization -->
-    <div id="blueprint-gate">
-        <div class="pane pane-left"></div>
-        <div class="pane pane-right"></div>
-        <button id="open-btn" onclick="unrollBlueprint()">INITIALIZE BLUEPRINT 🛠️</button>
-    </div>
-
-    <!-- Hidden Central Motherboard Card -->
-    <div class="display-container" id="reveal-card">
-        <!-- CRT Screen Sweep Line -->
-        <div class="scanline"></div>
-        
-        <!-- Technical Badge -->
-        <div class="tech-stamp">SYS_VER: 2.0_MAX_SPEC</div>
-
-        <!-- Target Identification Interactive Frame -->
-        <div class="photo-frame">
-            <img src="dad.jpg" alt="Best Dad Ever" id="dad-photo">
-            <div class="target-overlay">[ TARGET ACQUIRED ]<br>SYSTEM ANALYSIS:<br>WORLD'S #1 DAD MATRIX</div>
-        </div>
-        
-        <!-- Live Real-Time Data Ticker -->
-        <div class="live-counter">TOTAL HOURS OF BEST ADVICE: <span id="odometer">0</span> HR</div>
-
-        <h1>HAPPY FATHER'S DAY!</h1>
-        
-        <!-- Live Dynamic Gauge Parameter Board -->
-        <div class="metrics-board">
-            <div>
-                🛠️ PATIENCE: <span id="val-patience">0%</span>
-                <div class="gauge-container"><div id="g-patience" class="gauge-fill"></div></div>
-            </div>
-            <div>
-                ☕ COFFEE: <span id="val-coffee">INIT</span>
-                <div class="gauge-container"><div id="g-coffee" class="gauge-fill"></div></div>
-            </div>
-            <div>
-                🧠 WISDOM: <span id="val-wisdom">0%</span>
-                <div class="gauge-container"><div id="g-wisdom" class="gauge-fill"></div></div>
-            </div>
-            <div>
-                ❤️ JOKES: <span id="val-jokes">INIT</span>
-                <div class="gauge-container"><div id="g-jokes" class="gauge-fill"></div></div>
-            </div>
-        </div>
-        
-        <!-- Log Terminal Output -->
-        <div class="message-box">
-            <p id="changing-text">Select a schematic module below to read terminal logs...</p>
-        </div>
-
-        <!-- System Selectors -->
-        <div class="terminal-buttons">
-            <button onclick="selectSpec(0)">[FOUNDATION]</button>
-            <button onclick="selectSpec(1)">[LOGIC]</button>
-            <button onclick="selectSpec(2)">[MECHANICS]</button>
-        </div>
-
-        <!-- Live Streaming Code Infrastructure Diagnostics Window -->
-        <div class="hardware-terminal" id="hw-term">> SYSTEM_IDLE // ACCESS_GRANTED // STANDBY_FOR_SCHEMATIC_SELECT...</div>
-
-        <!-- System Utility Footer Tools -->
-        <div class="control-footer">
-            <button onclick="systemOverride()" style="padding: 5px 10px; background: #cc2511; color: white; border: 1px dashed white; border-radius: 4px; font-family: 'Courier New'; font-size: 0.7em; cursor: pointer; font-weight: bold;">⚠️ SYSTEM OVERRIDE</button>
-            <button id="audio-toggle" onclick="toggleMute()" style="padding: 5px 10px; background: transparent; color: #328cc1; border: 1px solid #328cc1; border-radius: 4px; font-family: 'Courier New'; font-size: 0.7em; cursor: pointer;">🔊 AUDIO: ON</button>
-        </div>
-    </div>
-
-    <script>
-        const dadSayings = [
-            "FOUNDATION LOG: To the man who built the structural framework of our family. Your support is our perfect constant. 📐",
-            "LOGIC LOG: Thank you for teaching me to look at problems logically, debug my failures, and always analyze to find a solution. 🛠️",
-            "MECHANICS LOG: Happy Father's Day to my favorite engineer! You are structurally, mechanically, and completely irreplaceable. ⚡"
-        ];
-
-        // Mock System JSON Streaming Data Arrays
-        const terminalFeeds = [
-            "> FETCH_DATA: [struct core_framework] -- stress_load: 0.00% // baseline_stability: INFINITE // material_strength: IMMUTABLE // connection: LOCALHOST",
-            "> RUN_LOGIC: [compile options -O3] -- parsing_wisdom... Done. // debug_runtime: 0 errors // path_analysis: OPTIMAL_ROUTE_FOUND // output: SUCCESS",
-            "> ENGINE_STAT: [calibrate gears] -- velocity: NOMINAL // thermal_core: SAFE // efficiency: 100% // torque_capacity: OVER_LIMIT // heart_status: FULL"
-        ];
-
-        let soundEnabled = true;
-
-        function unrollBlueprint() {
-            document.getElementById('blueprint-gate').classList.add('open');
-            
-            setTimeout(() => {
-                document.getElementById('blueprint-gate').style.display = 'none';
-                const card = document.getElementById('reveal-card');
-                card.style.display = 'block';
-                
-                setTimeout(() => {
-                    card.style.opacity = '1';
-                    setInterval(spawnParticles, 350);
-                    runOdometer(); // Start numeric ticker
-                    animateGauges(); // Trigger expanding hardware bars
-                }, 50);
-            }, 1500);
-        }
-
-        // Animates hardware parameters and increments the data labels interactively
-        function animateGauges() {
-            // Fill bars
-            document.getElementById('g-patience').style.width = '100%';
-            document.getElementById('g-coffee').style.width = '100%';
-            document.getElementById('g-wisdom').style.width = '100%';
-            document.getElementById('g-jokes').style.width = '100%';
-
-            // Dynamic string counter targets
-            document.getElementById('val-patience').innerText = "100%";
-            document.getElementById('val-coffee').innerText = "OPTIMAL";
-            document.getElementById('val-wisdom').innerText = "∞%";
-            document.getElementById('val-jokes').innerText = "CRITICAL";
-        }
-
-        // Live updating odometer odometer counting system
-        function runOdometer() {
-            const countTarget = 999999;
-            const element = document.getElementById('odometer');
-            let current = 0;
-            const step = Math.ceil(countTarget / 60); 
-            
-            let timer = setInterval(() => {
-                current += step;
-                if (current >= countTarget) {
-                    element.innerText = countTarget.toLocaleString();
-                    clearInterval(timer);
-                } else {
-                    element.innerText = current.toLocaleString();
-                }
-            }, 25);
-        }
-
-        function playBeep() {
-            if (!soundEnabled) return;
-            const sound = document.getElementById('click-sound');
-            if (sound) { sound.currentTime = 0; sound.play().catch(e => {}); }
-        }
-
-        function toggleMute() {
-            soundEnabled = !soundEnabled;
-            const btn = document.getElementById('audio-toggle');
-            btn.innerText = soundEnabled ? "🔊 AUDIO: ON" : "🔇 AUDIO: MUTED";
-            if (soundEnabled) playBeep();
-        }
-
-        // Changes active schematic display logs and updates code readout frame simultaneously
-        function selectSpec(index) {
-            const textElement = document.getElementById('changing-text');
-            const termElement = document.getElementById('hw-term');
-            playBeep();
-            
-            textElement.style.opacity = 0;
-            termElement.innerText = "> INITIALIZING CORE STREAMING PIPELINE...";
-            
-            setTimeout(() => {
-                textElement.innerText = "RUNNING DIAGNOSTICS... DECRYPTING LOG FILE...";
-                textElement.style.opacity = 0.4;
-                
-                setTimeout(() => {
-                    textElement.innerText = dadSayings[index];
-                    textElement.style.opacity = 1;
-                    termElement.innerText = terminalFeeds[index]; // Streams matching system matrix text
-                }, 600);
-            }, 200);
-        }
-
-        function systemOverride() {
-            playBeep();
-            document.body.style.backgroundColor = "#5a0f0f";
-            document.body.style.backgroundImage = "linear-gradient(rgba(255,0,0,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,0,0,0.1) 1px, transparent 1px)";
-            document.getElementById('hw-term').innerText = "🚨 WARNING: OVERHEAT_DETECTION // PARAMETER_OVERFLOW // EMERGENCY_SHUTDOWN_BYPASSED";
-            
-            let panicInterval = setInterval(spawnParticles, 40);
-            
-            setTimeout(() => {
-                alert("🚨 CRITICAL ERROR DETECTED:\n\nFather's Day love parameters have exceeded maximum safety levels! Core thermal matrix melting! ❤️🔥");
-                clearInterval(panicInterval);
-                
-                document.body.style.backgroundColor = "#0b3c5d";
-                document.body.style.backgroundImage = "linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)";
-                document.getElementById('hw-term').innerText = "> SYSTEM AUTOMATICALLY RECALIBRATED TO SAFE STEADY-STATE RUNTIME.";
-            }, 1000);
-        }
-
-        function spawnParticles() {
-            const symbols = ['⚙️', '⭐', '👍', '📐', '🔧', '✨'];
-            const p = document.createElement('div');
-            p.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
-            p.className = 'particle';
-            p.style.left = Math.random() * 100 + 'vw';
-            p.style.bottom = '-50px';
-            p.style.fontSize = (Math.random() * 15 + 20) + 'px';
-            p.style.animationDuration = (Math.random() * 3 + 4) + 's';
-            p.style.opacity = Math.random();
-            document.body.appendChild(p);
-            
-            setTimeout(() => p.remove(), 6000);
-        }
-    </script>
-</body>
-</html>
+        /* MAIN HUD INTERFACE WINDOW */
+        .hud-container { 
+            display: none; opacity: 0; width: 95
